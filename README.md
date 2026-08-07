@@ -1,14 +1,12 @@
 <div align="center">
 
-<sub>UNDERGRADUATE STUDENT · PEKING UNIVERSITY</sub>
-
 <h1>Liang (Twist) Shan</h1>
 
 </div>
 
-I'm an undergraduate at **Peking University** pursuing a double major in Statistics in the School of Mathematical Sciences and Economics in the National School of Development.
+I'm an undergraduate at Peking University pursuing a double major in Statistics in the School of Mathematical Sciences and Economics in the National School of Development.
 
-My research interests span the **statistical foundations, optimization, and mechanistic interpretability of modern machine learning**, with a focus on deep learning, reinforcement learning, and generative AI, including language models and diffusion models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
+My research interests span the **statistical foundations, optimization, and mechanistic interpretability of Modern Machine Learning**, with a focus on deep learning, reinforcement learning, and generative AI, including language models and diffusion models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
 
 <div align="center">
   
