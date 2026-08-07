@@ -14,8 +14,6 @@ My research interests span the **statistical foundations, optimization, and mech
 &nbsp;·&nbsp;
 <a href="mailto:twistshan1218@gmail.com">Email</a>
 &nbsp;·&nbsp;
-<a href="https://github.com/Twist-Shan">GitHub</a>
-&nbsp;·&nbsp;
 <a href="https://www.linkedin.com/in/liang-twist-shan">LinkedIn</a>
 &nbsp;·&nbsp;
 <a href="https://x.com/LiangTwistShan">X</a>
