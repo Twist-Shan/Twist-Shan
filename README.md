@@ -2,15 +2,9 @@
 
 <sub>UNDERGRADUATE STUDENT · PEKING UNIVERSITY</sub>
 
-<h1>Liang <i>(Twist)</i> Shan</h1>
+<h1>Liang (Twist) Shan</h1>
 
 <a href="https://twist-shan.github.io">Website ↗</a>
-&nbsp;&nbsp;·&nbsp;&nbsp;
-<a href="https://twist-shan.github.io/research/">Research ↗</a>
-&nbsp;&nbsp;·&nbsp;&nbsp;
-<a href="https://twist-shan.github.io/files/cv_Liang_Shan.pdf">CV ↓</a>
-&nbsp;&nbsp;·&nbsp;&nbsp;
-<a href="https://www.linkedin.com/in/liang-twist-shan">LinkedIn ↗</a>
 
 </div>
 
