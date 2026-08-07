@@ -4,7 +4,7 @@
 
 </div>
 
-I'm an undergraduate at Peking University pursuing a double major in Statistics in the School of Mathematical Sciences and Economics in the National School of Development.
+Hi! I'm an undergraduate in the School of Mathematical Sciences at Peking University.
 
 My research interests span the **statistical foundations, optimization, and mechanistic interpretability of Modern Machine Learning**, with a focus on deep learning, reinforcement learning, and generative AI, including language models and diffusion models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
 
