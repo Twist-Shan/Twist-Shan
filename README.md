@@ -1,7 +1,5 @@
 <div align="center">
-
 <h1>Liang (Twist) Shan</h1>
-
 </div>
 
 Hi! I'm an undergraduate in the School of Mathematical Sciences at Peking University.
