@@ -4,7 +4,7 @@ My research interests span the **statistical foundations, optimization, and mech
 
 <div align="center">
   
-<a href="https://twist-shan.github.io">Homepage ↗</a>
+<a href="https://twist-shan.github.io">Homepage</a>
 &nbsp;·&nbsp;
 <a href="mailto:twistshan1218@gmail.com">Email</a>
 &nbsp;·&nbsp;
