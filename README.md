@@ -1,6 +1,6 @@
 Hi! I'm Liang (Twist) Shan, an undergraduate in the School of Mathematical Sciences at Peking University.
 
-My research interests span the **statistical foundations, optimization, and mechanistic interpretability of Modern Machine Learning**, with a focus on Deep Learning, Reinforcement Learning, and Generative AI, including Language Models, and Diffusion Models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
+My research interests span the **statistical foundations, optimization, and mechanistic interpretability of Modern Machine Learning**, with a focus on deep learning, reinforcement learning, language models and diffusion models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
 
 <div align="center">
   
