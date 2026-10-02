@@ -4,7 +4,7 @@ My research interests span the **statistical foundations, optimization, and mech
 
 <div align="center">
 
-<a href="https://twist-shan.github.io](https://scholar.google.com/citations?user=yRkc4iMAAAAJ&hl=en">Google Scholar</a>
+<a href="https://scholar.google.com/citations?user=yRkc4iMAAAAJ&hl=en">Google Scholar</a>
 &nbsp;·&nbsp;
 <a href="https://twist-shan.github.io">Homepage</a>
 &nbsp;·&nbsp;
