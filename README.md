@@ -3,7 +3,9 @@ Hi! I'm Liang (Twist) Shan, an undergraduate in the School of Mathematical Scien
 My research interests span the **statistical foundations, optimization, and mechanistic interpretability of Modern Machine Learning**, with a focus on deep learning, reinforcement learning, and generative models including language models and diffusion models. I'm seeking PhD opportunities in **Statistics, Computer Science, and Operations Research** beginning in Fall 2028.
 
 <div align="center">
-  
+
+<a href="https://twist-shan.github.io](https://scholar.google.com/citations?user=yRkc4iMAAAAJ&hl=en">Google Scholar/a>
+&nbsp;·&nbsp;
 <a href="https://twist-shan.github.io">Homepage</a>
 &nbsp;·&nbsp;
 <a href="mailto:twistshan1218@gmail.com">Email</a>
