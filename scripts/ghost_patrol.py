@@ -17,7 +17,7 @@ def patrol(player, occupied, cells, lane, lag):
     rng = Random(731 + lag)
     # A changing waypoint gives each chase a drift lasting several beats.
     next_change = 1
-    min_squared = [9, *([6.25] * (len(occupied)-1))]
+    min_squared = [1] * len(occupied)
     safe = {c: 0 for c in cells if all((c[0]-p[0][0])**2+(c[1]-p[0][1])**2 >= limit
                                         for p, limit in zip(occupied, min_squared))}
     history = []

@@ -78,7 +78,7 @@ def render(days):
                   dur=".29s", repeatCount="indefinite")
     occupied = [timeline]
     cells = {(x,y) for x,y,_ in grid}
-    for lane, lag, color in [(1, 6, "#71b4d0"), (-1, 10, "#d992ac")]:
+    for lane, lag, color in [(1, 5, "#71b4d0"), (-1, 8, "#d992ac")]:
         ghost = ET.SubElement(svg, "g", attrib={"class":"player"})
         path = patrol(timeline, occupied, cells, lane, lag)
         move(ghost, path)
