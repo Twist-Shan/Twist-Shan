@@ -1,6 +1,7 @@
 """Render a looping Pac-Man animation from GitHub's public contribution calendar."""
 import sys
 from shortest_route import shortest_route
+from ghost_patrol import patrol
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
@@ -35,22 +36,15 @@ def render(days):
                      viewBox=f"0 0 {weeks * 16 + 24} 160", role="img")
     ET.SubElement(svg, "title").text = "Pac-Man eating dots on Liang Shan’s GitHub contribution calendar"
     ET.SubElement(svg, "style").text = """
-    .tile{fill:#251a3a}.pac{fill:#ffda49;stroke:#fff3ac;stroke-width:.6}
+    .tile{fill:#e8ecee}.label{fill:#667078}.pac{fill:#ffcf50;stroke:#b78830;stroke-width:.6}
+    @media(prefers-color-scheme:dark){.tile{fill:#19222a}.label{fill:#96a2ac}}
     @media(prefers-reduced-motion:reduce){.player{display:none}.dot{opacity:1!important}}
     """
     width = weeks * 16 + 24
-    ET.SubElement(svg, "rect", width=str(width), height="160", rx="13", fill="#0e0921")
-    ET.SubElement(svg, "rect", x="5", y="5", width=str(width-10), height="150",
-                  rx="10", fill="none", stroke="#ad42fa")
-    colors = ["", "#428ba9", "#31c6c7", "#58f5dc", "#b3ffef"]
-    ET.SubElement(svg, "path", d=f"M12 15V9H76 M{width-78} 151h66v-7",
-                  fill="none", stroke="#39f6eb", attrib={"stroke-width":"2"})
-    hud = ET.SubElement(svg, "g", fill="#83eee2",
-                        attrib={"font-family":"monospace","font-size":"9","letter-spacing":"1.4"})
-    ET.SubElement(hud, "text", x="16", y="146").text = "PAC // OPTIMAL ROUTE"
-    ET.SubElement(hud, "text", x=str(width-16), y="146",
-                  attrib={"text-anchor":"end"}).text = f"{steps:03d} STEPS"
-    centers = [f"{x*16+20},{y*16+24}" for x, y in route]
+    colors = ["", "#579991", "#45aba1", "#37c4b3", "#50ddc9"]
+    ET.SubElement(svg, "text", x=str(width-16), y="147", attrib={
+        "class":"label", "font-family":"monospace", "font-size":"9", "text-anchor":"end"
+    }).text = f"{steps} steps"
     for col, row, level in grid:
         x, y = col * 16 + 20, row * 16 + 24
         ET.SubElement(svg, "rect", x=str(x-7), y=str(y-7), width="14", height="14",
@@ -59,27 +53,36 @@ def render(days):
             dot = ET.SubElement(svg, "circle", cx=str(x), cy=str(y), r=str(2 + level / 2),
                                 fill=colors[level], attrib={"class": "dot"})
             arrival = max(.00001, first_visit[col, row] / (steps + 1))
-            if level == 4:
-                ET.SubElement(svg, "circle", cx=str(x), cy=str(y), r="5.5",
-                              fill="none", stroke="#1c9caa", attrib={"stroke-width":".6"})
             ET.SubElement(dot, "animate", attributeName="opacity", values="1;0;0",
                           keyTimes=f"0;{arrival:.6f};1", calcMode="discrete",
                           dur="40s", repeatCount="indefinite")
     player = ET.SubElement(svg, "g", attrib={"class": "player"})
-    centers.append(centers[-1])  # Last beat holds the cleared board.
-    course = "M"+" L".join(centers)
-    ET.SubElement(player, "animateMotion", path=course,
-                  rotate="auto", calcMode="linear", dur="40s", repeatCount="indefinite")
+    timeline = route + [route[-1]]
+    def move(actor, path):
+        values = ";".join(f"{16*x+20} {16*y+24}" for x,y in path)
+        ET.SubElement(actor, "animateTransform", attributeName="transform", type="translate",
+                      values=values, calcMode="linear", dur="40s", repeatCount="indefinite")
+    move(player, timeline)
+    facing = ET.SubElement(player, "g")
+    angles = {(1,0):0, (0,1):90, (-1,0):180, (0,-1):270}
+    headings = [angles[(b[0]-a[0], b[1]-a[1])] for a,b in zip(route,route[1:])]
+    headings.extend([headings[-1] if headings else 0]*2)
+    ET.SubElement(facing, "animateTransform", attributeName="transform", type="rotate",
+                  values=";".join(map(str,headings)), calcMode="discrete",
+                  keyTimes=";".join(str(i/(len(timeline)-1)) for i in range(len(timeline))),
+                  dur="40s", repeatCount="indefinite")
     mouth = "M0 0 L6 -4 A7.2 7.2 0 1 0 6 4 Z"
     closed = "M0 0 L7.2 -.4 A7.2 7.2 0 1 0 7.2 .4 Z"
-    body = ET.SubElement(player, "path", d=mouth, attrib={"class": "pac"})
+    body = ET.SubElement(facing, "path", d=mouth, attrib={"class": "pac"})
     ET.SubElement(body, "animate", attributeName="d", values=";".join([mouth, closed, mouth]),
                   dur=".29s", repeatCount="indefinite")
-    for delay, color in [(3, "#00eaff"), (6, "#ff39b5")]:
+    occupied = [timeline]
+    cells = {(x,y) for x,y,_ in grid}
+    for lane, lag, color in [(3, 4, "#71b4d0"), (-3, 8, "#d992ac")]:
         ghost = ET.SubElement(svg, "g", attrib={"class":"player"})
-        chase = [centers[max(0, i-delay)] for i in range(len(centers))]
-        ET.SubElement(ghost, "animateMotion", path="M"+" L".join(chase),
-                      calcMode="linear", dur="40s", repeatCount="indefinite")
+        path = patrol(timeline, occupied, cells, lane, lag)
+        move(ghost, path)
+        occupied.append(path)
         ET.SubElement(ghost, "path", fill=color,
                       d="M-6 6V-2h1v-3h2v-1h6v1h2v3h1v8H4V4H2v2h-4V4h-2v2Z")
         for eye in [-3, 2]:
