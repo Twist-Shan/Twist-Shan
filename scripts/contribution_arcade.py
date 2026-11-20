@@ -33,18 +33,14 @@ def render(days):
     for step, cell in enumerate(route):
         first_visit.setdefault(cell, step)
     svg = ET.Element("svg", xmlns="http://www.w3.org/2000/svg",
-                     viewBox=f"0 0 {weeks * 16 + 24} 160", role="img")
+                     viewBox=f"0 0 {weeks * 16 + 24} 144", role="img")
     ET.SubElement(svg, "title").text = "Pac-Man eating dots on Liang Shan’s GitHub contribution calendar"
     ET.SubElement(svg, "style").text = """
-    .tile{fill:#e8ecee}.label{fill:#667078}.pac{fill:#ffcf50;stroke:#b78830;stroke-width:.6}
-    @media(prefers-color-scheme:dark){.tile{fill:#19222a}.label{fill:#96a2ac}}
+    .tile{fill:#e8ecee}.pac{fill:#ffcf50;stroke:#b78830;stroke-width:.6}
+    @media(prefers-color-scheme:dark){.tile{fill:#19222a}}
     @media(prefers-reduced-motion:reduce){.player{display:none}.dot{opacity:1!important}}
     """
-    width = weeks * 16 + 24
     colors = ["", "#579991", "#45aba1", "#37c4b3", "#50ddc9"]
-    ET.SubElement(svg, "text", x=str(width-16), y="147", attrib={
-        "class":"label", "font-family":"monospace", "font-size":"9", "text-anchor":"end"
-    }).text = f"{steps} steps"
     for col, row, level in grid:
         x, y = col * 16 + 20, row * 16 + 24
         ET.SubElement(svg, "rect", x=str(x-7), y=str(y-7), width="14", height="14",
