@@ -1,5 +1,6 @@
 """Render a looping Pac-Man animation from GitHub's public contribution calendar."""
 import sys
+from shortest_route import shortest_route
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from pathlib import Path
@@ -24,36 +25,31 @@ def render(days):
     weeks = (max(days) - sunday).days // 7 + 1
     grid = [((day - sunday).days // 7, (day.weekday() + 1) % 7, level)
             for day, level in days.items()]
-    remaining = {(x, y) for x, y, level in grid if level}
-    route = [(0, 0)]
-    remaining.discard(route[0])
-    while remaining:
-        x, y = route[-1]
-        target_x, target_y = min(remaining, key=lambda p: (abs(x-p[0])+abs(y-p[1]), p))
-        while (x, y) != (target_x, target_y):
-            if x != target_x:
-                x += 1 if target_x > x else -1
-            else:
-                y += 1 if target_y > y else -1
-            route.append((x, y))
-            remaining.discard((x, y))
-    # Retrace the path so the chase also loops smoothly at the year boundary.
-    route += route[-2::-1] or [route[0]]
+    route = shortest_route((x, y) for x, y, level in grid if level)
+    steps = len(route) - 1
+    print(f'{steps} certified minimum steps')
     first_visit = {}
     for step, cell in enumerate(route):
         first_visit.setdefault(cell, step)
     svg = ET.Element("svg", xmlns="http://www.w3.org/2000/svg",
-                     viewBox=f"0 0 {weeks * 16 + 24} 144", role="img")
+                     viewBox=f"0 0 {weeks * 16 + 24} 160", role="img")
     ET.SubElement(svg, "title").text = "Pac-Man eating dots on Liang Shan’s GitHub contribution calendar"
     ET.SubElement(svg, "style").text = """
-    .tile{fill:#1b2940}.pac{fill:#ffda49;stroke:#fff3ac;stroke-width:.6}
+    .tile{fill:#251a3a}.pac{fill:#ffda49;stroke:#fff3ac;stroke-width:.6}
     @media(prefers-reduced-motion:reduce){.player{display:none}.dot{opacity:1!important}}
     """
     width = weeks * 16 + 24
-    ET.SubElement(svg, "rect", width=str(width), height="144", rx="13", fill="#10192b")
-    ET.SubElement(svg, "rect", x="5", y="5", width=str(width-10), height="134",
-                  rx="10", fill="none", stroke="#42618a")
-    colors = ["", "#589c98", "#6ac6af", "#96e0be", "#d3ffca"]
+    ET.SubElement(svg, "rect", width=str(width), height="160", rx="13", fill="#0e0921")
+    ET.SubElement(svg, "rect", x="5", y="5", width=str(width-10), height="150",
+                  rx="10", fill="none", stroke="#ad42fa")
+    colors = ["", "#428ba9", "#31c6c7", "#58f5dc", "#b3ffef"]
+    ET.SubElement(svg, "path", d=f"M12 15V9H76 M{width-78} 151h66v-7",
+                  fill="none", stroke="#39f6eb", attrib={"stroke-width":"2"})
+    hud = ET.SubElement(svg, "g", fill="#83eee2",
+                        attrib={"font-family":"monospace","font-size":"9","letter-spacing":"1.4"})
+    ET.SubElement(hud, "text", x="16", y="146").text = "PAC // OPTIMAL ROUTE"
+    ET.SubElement(hud, "text", x=str(width-16), y="146",
+                  attrib={"text-anchor":"end"}).text = f"{steps:03d} STEPS"
     centers = [f"{x*16+20},{y*16+24}" for x, y in route]
     for col, row, level in grid:
         x, y = col * 16 + 20, row * 16 + 24
@@ -62,29 +58,28 @@ def render(days):
         if level:
             dot = ET.SubElement(svg, "circle", cx=str(x), cy=str(y), r=str(2 + level / 2),
                                 fill=colors[level], attrib={"class": "dot"})
-            arrival = max(.00001, first_visit[col, row] / (len(route)-1))
+            arrival = max(.00001, first_visit[col, row] / (steps + 1))
             if level == 4:
                 ET.SubElement(svg, "circle", cx=str(x), cy=str(y), r="5.5",
-                              fill="none", stroke="#708a75", attrib={"stroke-width":".6"})
+                              fill="none", stroke="#1c9caa", attrib={"stroke-width":".6"})
             ET.SubElement(dot, "animate", attributeName="opacity", values="1;0;0",
                           keyTimes=f"0;{arrival:.6f};1", calcMode="discrete",
                           dur="40s", repeatCount="indefinite")
     player = ET.SubElement(svg, "g", attrib={"class": "player"})
+    centers.append(centers[-1])  # Last beat holds the cleared board.
     course = "M"+" L".join(centers)
     ET.SubElement(player, "animateMotion", path=course,
-                  rotate="auto", dur="40s", repeatCount="indefinite")
+                  rotate="auto", calcMode="linear", dur="40s", repeatCount="indefinite")
     mouth = "M0 0 L6 -4 A7.2 7.2 0 1 0 6 4 Z"
     closed = "M0 0 L7.2 -.4 A7.2 7.2 0 1 0 7.2 .4 Z"
     body = ET.SubElement(player, "path", d=mouth, attrib={"class": "pac"})
     ET.SubElement(body, "animate", attributeName="d", values=";".join([mouth, closed, mouth]),
                   dur=".29s", repeatCount="indefinite")
-    for delay, color in [(3, "#79c9ea"), (6, "#ed98b4")]:
+    for delay, color in [(3, "#00eaff"), (6, "#ff39b5")]:
         ghost = ET.SubElement(svg, "g", attrib={"class":"player"})
-        cycle = centers[:-1]
-        offset = delay % len(cycle)
-        chase = cycle[-offset:] + cycle[:-offset] if offset else cycle
-        ET.SubElement(ghost, "animateMotion", path="M"+" L".join(chase+[chase[0]]),
-                      dur="40s", repeatCount="indefinite")
+        chase = [centers[max(0, i-delay)] for i in range(len(centers))]
+        ET.SubElement(ghost, "animateMotion", path="M"+" L".join(chase),
+                      calcMode="linear", dur="40s", repeatCount="indefinite")
         ET.SubElement(ghost, "path", fill=color,
                       d="M-6 6V-2h1v-3h2v-1h6v1h2v3h1v8H4V4H2v2h-4V4h-2v2Z")
         for eye in [-3, 2]:
