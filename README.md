@@ -18,4 +18,4 @@ My research interests span the **statistical foundations, optimization, and mech
 
 ## GitHub Activity
 
-![Pac-Man eating my GitHub contributions](./pacman.svg)
+![Pac-Man eating my GitHub contributions](./contribution-patrol.svg)

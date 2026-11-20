@@ -101,4 +101,4 @@ if __name__ == "__main__":
     calendar.feed(html)
     if len(calendar.days) < 350:
         raise ValueError("Incomplete contribution calendar")
-    ET.ElementTree(render(calendar.days)).write("pacman.svg", encoding="utf-8")
+    ET.ElementTree(render(calendar.days)).write("contribution-patrol.svg", encoding="utf-8")
