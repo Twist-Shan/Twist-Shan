@@ -15,3 +15,7 @@ My research interests span the **statistical foundations, optimization, and mech
 <a href="https://x.com/LiangTwistShan">X</a>
 
 </div>
+
+## GitHub Activity
+
+![Pac-Man eating my GitHub contributions](./pacman.svg)
